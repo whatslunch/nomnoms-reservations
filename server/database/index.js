@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'ye',
-  database: 'yump_sf_reservation'
+  database: 'reservation_hour'
 })
 
 connection.connect();

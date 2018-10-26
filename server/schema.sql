@@ -1,12 +1,14 @@
-CREATE DATABASE yump_sf_reservation;
+CREATE DATABASE reservation_hour;
 
-use yump_sf_reservation;
+use reservation_hour;
 
 CREATE TABLE restaurant
 (
 
   id INT(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
+  availableTable INT(11) NOT NULL,
+  totalTable INT(11) NOT NULL,
   PRIMARY KEY (id)
 
 );
@@ -18,8 +20,23 @@ CREATE TABLE reservation
   reservee VARCHAR(50) NOT NULL,
   date DATE NOT NULL,
   time TIME NOT NULL,
-  rest_id INT(11) NOT NULL,
+  restaurant_id INT(11) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (rest_id) REFERENCES restaurant(id)
+  CONSTRAINT reservation_restaurant_id_fk
+  FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
 
 );
+
+CREATE TABLE hour 
+(
+
+  id INT (11) NOT NULL AUTO_INCREMENT, 
+  weekday VARCHAR(20) NOT NULL,
+  opening_hour TIME NOT NULL,
+  closing_hour TIME NOT NULL,
+  restaurant_id INT(11) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT hour_restaurant_id_fk
+  FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
+
+)
