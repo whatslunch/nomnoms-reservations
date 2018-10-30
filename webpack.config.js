@@ -8,12 +8,18 @@ module.exports = {
   },
   module: {
     rules: [
+      //{
+        //enforce: 'pre',
+        //test: /\.jsx?/,
+        //exclude: /node_modules/,
+        //loader: 'eslint-loader',
+      //},
       {
         test: /\.jsx?/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-react', '@babel/preset-env']
+          presets: ['@babel/preset-react', '@babel/preset-env', 'babel-preset-airbnb']
         }
       }
     ]
