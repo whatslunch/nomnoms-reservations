@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS reservation_hour;
+
 CREATE DATABASE reservation_hour;
 
 use reservation_hour;
@@ -22,7 +24,6 @@ CREATE TABLE reservation
   time TIME NOT NULL,
   restaurant_id INT(11) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT reservation_restaurant_id_fk
   FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
 
 );
@@ -36,7 +37,6 @@ CREATE TABLE hour
   closing_hour TIME NOT NULL,
   restaurant_id INT(11) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT hour_restaurant_id_fk
   FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
 
 )

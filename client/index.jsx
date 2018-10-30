@@ -13,12 +13,16 @@ const Wrapper = styled.div`
 
 const Heading = styled.h3`
   margin: 0;
-  margin-bottom: 13px;
+  margin-bottom: 11px;
+  padding: 0 11px;
+`;
+
+const HeadingWord = styled.a`
+  margin-left: 5px;
 `;
 
 const ReservationFormWrapper = styled.div`
   margin: 0;
-  background-color: red;
 `;
 
 class App extends Component {
@@ -30,7 +34,10 @@ class App extends Component {
   render() {
     return (
       <Wrapper>
-        <Heading>Hello</Heading>
+        <Heading>
+          <i className="far fa-calendar"></i>
+          <HeadingWord>Make a Reservation</HeadingWord>
+        </Heading>
         <ReservationFormWrapper>
           <ReservationForm />
         </ReservationFormWrapper>

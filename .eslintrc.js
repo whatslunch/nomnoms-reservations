@@ -5,6 +5,10 @@
  *   https://github.com/reactorcore/eslint-config-hackreactor
  */
 
-module.exports = {
-  extends: './node_modules/eslint-config-hackreactor/index.js'
-};
+{
+  parser: 'babel-eslint',
+  'plugins': [
+    'react'
+  ],
+  'extends': ['eslint:recommended', 'plugin:react/recommended']
+}
