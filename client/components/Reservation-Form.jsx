@@ -18,19 +18,22 @@ const SubmitBox = styled.div`
   padding: 3px;
   width: 100%;
   box-sizing: border-box;
-`;
-
-const SubmitWrapper = styled.button`
-  width: 100%;
-  box-sizing: border-box;
-  height: 30px;
-  padding: 5px 9px;
-  border: rgb(51, 51, 51) solid 1px;
-  border-radius: 3px;
-  font-weight: 700;
-  color: white;
-  background-color: rgb(60, 181, 46);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  button {
+    width: 100%;
+    box-sizing: border-box;
+    height: 30px;
+    padding: 5px 9px;
+    border: rgb(51, 51, 51) solid 1px;
+    border-radius: 3px;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(60, 181, 46);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    &:hover {
+      background-color: #41c532;
+    }
+  }
 `;
 
 class ReservationForm extends Component {
@@ -162,7 +165,7 @@ class ReservationForm extends Component {
         <Time hours={this.props.hours[weekday]} />
         <People />
         <SubmitBox>
-          <SubmitWrapper>Find a Table</SubmitWrapper>
+          <button>Find a Table</button>
         </SubmitBox>
       </ListBox>
     );

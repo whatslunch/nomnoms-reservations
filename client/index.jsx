@@ -4,16 +4,29 @@ import styled from 'styled-components';
 import axios from 'axios';
 import moment from 'moment'
 import ReservationForm from './components/Reservation-Form.jsx';
+import Hour from './components/Hour.jsx';
+
+const Sidebar = styled.div`
+  width: 300px;
+`;
 
 const Wrapper = styled.div`
   background-color: white;
+  box-sizing: border-box;
   border: 1px solid #e6e6e6;
   border-radius: 4px;
-  width: 300px;
+  width: 100%;
   padding: 14px;
 `;
 
-const Heading = styled.h3`
+const Rail = styled.div`
+  border-left: 1px solid #c1c1c1;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 30px;
+`;
+
+const Heading = styled.h4`
   margin: 0;
   margin-bottom: 11px;
   padding: 0 11px;
@@ -64,18 +77,23 @@ class App extends Component {
 
   render() {
     return (
-      <Wrapper>
-        <Heading>
-          <i className="far fa-calendar"></i>
-          <a>Make a Reservation</a>
-        </Heading>
-        <ReservationFormWrapper>
-          <ReservationForm
-            reservations={this.state.reservations}
-            hours={this.state.hours}
-          />
-        </ReservationFormWrapper>
-      </Wrapper>
+      <Sidebar>
+        <Wrapper>
+          <Heading>
+            <i className="far fa-calendar"></i>
+            <a>Make a Reservation</a>
+          </Heading>
+          <ReservationFormWrapper>
+            <ReservationForm
+              reservations={this.state.reservations}
+              hours={this.state.hours}
+            />
+          </ReservationFormWrapper>
+        </Wrapper>
+        <Rail>
+          <Hour hours={this.state.hours} />
+        </Rail>
+      </Sidebar>
     );
   }
 

@@ -18,7 +18,7 @@ const TimeBox = styled.li`
     margin: auto;
     cursor: pointer;
     &.left {
-      left: 10px;
+      left: 14px;
     }
     &.right {
       right: 6px;
@@ -48,31 +48,65 @@ class Time extends Component {
   }
 
   componentDidUpdate() {
-  }
-
-  populateHours() {
-    let hours = this.props.hours;
-    let time = hours.opening_hour;
-    const timeArr = [];
-    while (hours.opening_hour !== hours.closing_hour) {
-      timeArr.push(time);
-      time = hours.opening_hour.match(/\d/).join('');
-      console.log(time);
+    if (this.props.hours) {
+      this.populateHours();
     }
   }
 
+  populateHours() {
+    new Promise((resolve, reject) => {
+      if (this.state.timeArr.length > 0) {
+        reject();
+      } else {
+        resolve();
+      }
+    })
+    .then(() => {
+      let hours = this.props.hours;
+      let time = hours.opening_hour;
+      const timeArr = [];
+      while (time !== hours.closing_hour) {
+        timeArr.push(time);
+        time = moment(time, 'kk:mm').add(30, 'minutes').format('kk:mm');
+      }
+      timeArr.push(time);
+      this.setState({
+        timeArr: timeArr
+      });
+    })
+    .catch(() => { return; });
+  }
+
   render() {
-    return (
-      <TimeBox>
-        <span className="left">
-          <i class="far fa-clock"></i>
-        </span>
-        <select></select>
-        <span className="right">
-          <i className="fas fa-caret-down"></i>
-        </span>
-      </TimeBox>
-    );
+    if (this.state.timeArr.length > 0) {
+      return (
+        <TimeBox>
+          <span className="left">
+            <i class="far fa-clock"></i>
+          </span>
+          <select>
+            {this.state.timeArr.map(time => (
+              <option>{time}</option>
+            ))}
+          </select>
+          <span className="right">
+            <i className="fas fa-caret-down"></i>
+          </span>
+        </TimeBox>
+      );
+    } else {
+      return (
+        <TimeBox>
+          <span className="left">
+            <i class="far fa-clock"></i>
+          </span>
+          <select></select>
+          <span className="right">
+            <i className="fas fa-caret-down"></i>
+          </span>
+        </TimeBox>
+      );
+    }
   }
 
 }
