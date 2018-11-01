@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const DateBox = styled.li`
@@ -33,17 +34,22 @@ const DateBox = styled.li`
   }
 `;
 
-const Date = (props) => (
-  <DateBox onClick={props.toggleCalendar}>
+const Date = ({ toggleCalendar, selectedDate }) => (
+  <DateBox onClick={toggleCalendar}>
     <span className="left">
-      <i class="far fa-calendar"></i>
+      <i className="far fa-calendar" />
     </span>
-    <input type="text" value={props.selectedDate} />
+    <input type="text" value={selectedDate} />
     <span className="right">
-      <i className="fas fa-caret-down"></i>
+      <i className="fas fa-caret-down" />
     </span>
-  </DateBox>   
+  </DateBox>
 );
+
+Date.propTypes = {
+  toggleCalendar: PropTypes.func.isRequired,
+  selectedDate: PropTypes.func.isRequired,
+};
 
 
 export default Date;

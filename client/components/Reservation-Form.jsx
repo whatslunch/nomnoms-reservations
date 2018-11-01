@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import Date from './Date.jsx';
-import Calendar from './Calendar.jsx';
-import Time from './Time.jsx';
-import People from './People.jsx';
+import Date from './Date';
+import Calendar from './Calendar';
+import Time from './Time';
+import People from './People';
 
 const ListBox = styled.ul`
   list-style-type: none;
@@ -37,6 +38,9 @@ const SubmitBox = styled.div`
 `;
 
 class ReservationForm extends Component {
+  static propTypes = {
+    hours: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  }
 
   constructor(props) {
     super(props);
@@ -46,40 +50,38 @@ class ReservationForm extends Component {
       selectedMonth: null,
       selectedYear: null,
       firstWeekday: null,
-      monthGrid: []
+      monthGrid: [],
     };
     this.toggleCalendar = this.toggleCalendar.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.generateCalendar = this.generateCalendar.bind(this);
-    this.updateSelectedDate= this.updateSelectedDate.bind(this);
+    this.updateSelectedDate = this.updateSelectedDate.bind(this);
   }
 
   componentDidMount() {
     const today = moment().format('dddd, MMMM D, YYYY');
-    const month = parseInt(moment().format('M'));
-    const year = parseInt(moment().format('YYYY'));
+    const month = parseInt(moment().format('M'), 10);
+    const year = parseInt(moment().format('YYYY'), 10);
     const firstWeekday = moment().startOf('month').format('d');
     this.setState({
       selectedDate: today,
       selectedMonth: month,
       selectedYear: year,
-      firstWeekday: firstWeekday
+      firstWeekday,
     });
   }
 
   generateCalendar() {
-    let days;
-    let month = this.state.selectedMonth;
-    let firstWeekday = this.state.firstWeekday;
-    let daysOnMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    days = daysOnMonth[month - 1];
-    let output = [];
+    const { selectedMonth, firstWeekday } = this.state;
+    const daysOnMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const days = daysOnMonth[selectedMonth - 1];
+    const output = [];
     let week = [];
-    for (let i = 0; i < firstWeekday; i++) {
+    for (let i = 0; i < firstWeekday; i += 1) {
       week.push(null);
     }
-    for (let j = 1; j <= days; j++) {
+    for (let j = 1; j <= days; j += 1) {
       week.push(j);
       if (week.length === 7) {
         output.push(week);
@@ -90,87 +92,93 @@ class ReservationForm extends Component {
         }
         output.push(week);
       }
-    } 
+    }
     this.setState({
-      monthGrid: output
+      monthGrid: output,
     });
   }
 
   previousMonth() {
-    let updatedMonth = this.state.selectedMonth - 1;
-    let updatedYear = this.state.selectedYear;
+    const { selectedMonth, selectedYear } = this.state;
+    let updatedMonth = selectedMonth - 1;
+    let updatedYear = selectedYear;
     if (updatedMonth === 0) {
       updatedMonth = 12;
-      updatedYear = this.state.selectedYear - 1;
+      updatedYear = selectedYear - 1;
     }
-    let updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d')
+    const updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d');
     this.setState({
       selectedMonth: updatedMonth,
       selectedYear: updatedYear,
-      firstWeekday: updatedWeekday
-    })
+      firstWeekday: updatedWeekday,
+    });
   }
 
   nextMonth() {
-    let updatedMonth = this.state.selectedMonth + 1;
-    let updatedYear = this.state.selectedYear;
+    const { selectedMonth, selectedYear } = this.state;
+    let updatedMonth = selectedMonth + 1;
+    let updatedYear = selectedYear;
     if (updatedMonth === 13) {
       updatedMonth = 1;
-      updatedYear = this.state.selectedYear + 1;
+      updatedYear = selectedYear + 1;
     }
-    let updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d')
+    const updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d');
     this.setState({
       selectedMonth: updatedMonth,
       selectedYear: updatedYear,
-      firstWeekday: updatedWeekday
+      firstWeekday: updatedWeekday,
     });
   }
 
   updateSelectedDate(updatedDate) {
     this.setState({
-      selectedDate: updatedDate
+      selectedDate: updatedDate,
     });
   }
 
   toggleCalendar() {
-    this.setState({
-      dateClicked: !this.state.dateClicked
-    });
+    this.setState(prevState => ({
+      dateClicked: !prevState.dateClicked,
+    }));
   }
 
   render() {
-    let header = moment(`${this.state.selectedMonth} ${this.state.selectedYear}`, 'M YYYY').format('MMMM YYYY');
-    let weekday = moment().format('d');
+    const {
+      selectedDate, selectedMonth, selectedYear, dateClicked, monthGrid,
+    } = this.state;
+    const { hours } = this.props;
+    const header = moment(`${selectedMonth} ${selectedYear}`, 'M YYYY').format('MMMM YYYY');
+    const weekday = moment().format('d');
     let calendar;
-    if (this.state.dateClicked) {
-      calendar = 
-        <Calendar 
+    if (dateClicked) {
+      calendar = (
+        <Calendar
           header={header}
-          selectedDate={this.state.selectedDate}
+          selectedDate={selectedDate}
           previousMonth={this.previousMonth}
           nextMonth={this.nextMonth}
           generateCalendar={this.generateCalendar}
           toggleCalendar={this.toggleCalendar}
-          monthGrid={this.state.monthGrid}
+          monthGrid={monthGrid}
           updateSelectedDate={this.updateSelectedDate}
         />
+      );
     }
     return (
       <ListBox>
-        <Date 
+        <Date
           toggleCalendar={this.toggleCalendar}
-          selectedDate={this.state.selectedDate}
+          selectedDate={selectedDate}
         />
         {calendar}
-        <Time hours={this.props.hours[weekday]} />
+        <Time hours={hours[weekday]} />
         <People />
         <SubmitBox>
-          <button>Find a Table</button>
+          <button type="submit">Find a Table</button>
         </SubmitBox>
       </ListBox>
     );
   }
-
 }
 
 export default ReservationForm;

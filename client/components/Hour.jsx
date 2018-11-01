@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import moment from 'moment';
-import Weekday from './Weekday.jsx';
+import Weekday from './Weekday';
 
 const Wrapper = styled.div`
   h4 {
@@ -10,29 +10,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const HourTable = styled.div`
+const Hour = ({ hours }) => (
+  <Wrapper>
+    <h4>Hour</h4>
+    <div>
+      {hours.map(weekday => (
+        <Weekday weekday={weekday} />
+      ))}
+    </div>
+  </Wrapper>
+);
 
-`;
-
-class Hour extends Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <h4>Hour</h4>
-        <HourTable>
-          {this.props.hours.map(weekday => (
-            <Weekday day={weekday} />
-          ))}
-        </HourTable>
-      </Wrapper>
-    );
-  }
-
-}
+Hour.propTypes = {
+  hours: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+};
 
 export default Hour;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -39,76 +40,80 @@ const TimeBox = styled.li`
 `;
 
 class Time extends Component {
+  static propTypes = {
+    hours: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  }
 
   constructor(props) {
     super(props);
     this.state = {
-      timeArr: []
+      timeArr: [],
     };
   }
 
   componentDidUpdate() {
-    if (this.props.hours) {
+    const { hours } = this.props;
+    if (hours) {
       this.populateHours();
     }
   }
 
   populateHours() {
+    const { timeArr } = this.state;
+    const { hours } = this.props;
     new Promise((resolve, reject) => {
-      if (this.state.timeArr.length > 0) {
+      if (timeArr.length > 0) {
         reject();
       } else {
         resolve();
       }
     })
-    .then(() => {
-      let hours = this.props.hours;
-      let time = hours.opening_hour;
-      const timeArr = [];
-      while (time !== hours.closing_hour) {
-        timeArr.push(time);
-        time = moment(time, 'kk:mm').add(30, 'minutes').format('kk:mm');
-      }
-      timeArr.push(time);
-      this.setState({
-        timeArr: timeArr
-      });
-    })
-    .catch(() => { return; });
+      .then(() => {
+        let time = hours.opening_hour;
+        const newTimeArr = [];
+        while (time !== hours.closing_hour) {
+          newTimeArr.push(time);
+          time = moment(time, 'kk:mm').add(30, 'minutes').format('kk:mm');
+        }
+        newTimeArr.push(time);
+        this.setState({
+          timeArr: newTimeArr,
+        });
+      })
+      .catch(() => {});
   }
 
   render() {
-    if (this.state.timeArr.length > 0) {
+    const { timeArr } = this.state;
+    if (timeArr.length > 0) {
       return (
         <TimeBox>
           <span className="left">
-            <i class="far fa-clock"></i>
+            <i className="far fa-clock" />
           </span>
           <select>
-            {this.state.timeArr.map(time => (
+            {timeArr.map(time => (
               <option>{time}</option>
             ))}
           </select>
           <span className="right">
-            <i className="fas fa-caret-down"></i>
-          </span>
-        </TimeBox>
-      );
-    } else {
-      return (
-        <TimeBox>
-          <span className="left">
-            <i class="far fa-clock"></i>
-          </span>
-          <select></select>
-          <span className="right">
-            <i className="fas fa-caret-down"></i>
+            <i className="fas fa-caret-down" />
           </span>
         </TimeBox>
       );
     }
+    return (
+      <TimeBox>
+        <span className="left">
+          <i className="far fa-clock" />
+        </span>
+        <select />
+        <span className="right">
+          <i className="fas fa-caret-down" />
+        </span>
+      </TimeBox>
+    );
   }
-
 }
 
 export default Time;

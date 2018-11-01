@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -16,24 +17,31 @@ const WeekdayWrapper = styled.div`
     }
     &.extra {
       flex-grow: 2;
-      color: #41a700;
       font-size: 12px;
       font-weight: bold;
+      &.open {
+        color: #41a700;
+      }
+      &.closed {
+        color: rgb(211, 35, 35);
+      }
     }
   }
 `;
 
-const Weekday = (props) => {
-  let day = moment(props.day.weekday, 'd').format('ddd');
-  let opening = moment(props.day.opening_hour, 'kk:mm').format('hh:mm a');
-  let closing = moment(props.day.closing_hour, 'kk:mm').format('hh:mm a');
+const Weekday = ({ weekday }) => {
+  const day = moment(weekday.weekday, 'd').format('ddd');
+  const opening = moment(weekday.opening_hour, 'kk:mm').format('hh:mm a');
+  const closing = moment(weekday.closing_hour, 'kk:mm').format('hh:mm a');
   let today;
   if (
-    parseInt(moment().format('d')) === parseInt(props.day.weekday) &&
-    parseInt(moment().format('kk')) <= parseInt(moment(props.day.closing_hour, 'kk:mm').format('kk')) &&
-    parseInt(moment().format('kk')) >= parseInt(moment(props.day.opening_hour, 'kk:mm').format('kk'))
+    parseInt(moment().format('d'), 10) === parseInt(weekday.weekday, 10)
+    && parseInt(moment().format('kk'), 10) <= parseInt(moment(weekday.closing_hour, 'kk:mm').format('kk'), 10)
+    && parseInt(moment().format('kk'), 10) >= parseInt(moment(weekday.opening_hour, 'kk:mm').format('kk'), 10)
   ) {
-    today = <span>Open now</span>
+    today = <span className="open">Open now</span>;
+  } else {
+    today = <span className="closed">Closed</span>;
   }
   return (
     <WeekdayWrapper>
@@ -49,6 +57,10 @@ const Weekday = (props) => {
       </span>
     </WeekdayWrapper>
   );
-}
+};
+
+Weekday.propTypes = {
+  weekday: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+};
 
 export default Weekday;
