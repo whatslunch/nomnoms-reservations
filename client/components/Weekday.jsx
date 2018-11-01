@@ -15,18 +15,14 @@ const WeekdayWrapper = styled.div`
     &.hours {
       flex-grow: 3;
     }
-    &.extra {
-      flex-grow: 2;
-      font-size: 12px;
-      font-weight: bold;
-      &.open {
-        color: #41a700;
-      }
-      &.closed {
-        color: rgb(211, 35, 35);
-      }
-    }
   }
+`;
+
+const Today = styled.span`
+  color: #41a700;
+  font-size: 12px;
+  font-weight: bold;
+  padding-right: 8px;
 `;
 
 const Weekday = ({ weekday }) => {
@@ -39,9 +35,7 @@ const Weekday = ({ weekday }) => {
     && parseInt(moment().format('kk'), 10) <= parseInt(moment(weekday.closing_hour, 'kk:mm').format('kk'), 10)
     && parseInt(moment().format('kk'), 10) >= parseInt(moment(weekday.opening_hour, 'kk:mm').format('kk'), 10)
   ) {
-    today = <span className="open">Open now</span>;
-  } else {
-    today = <span className="closed">Closed</span>;
+    today = <Today>Open now</Today>;
   }
   return (
     <WeekdayWrapper>

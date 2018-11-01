@@ -30,8 +30,8 @@ const Heading = styled.h4`
   margin: 0;
   margin-bottom: 11px;
   padding: 0 11px;
-  a {
-    margin-left: 5px;
+  span {
+    margin-left: 10px;
   }
 `;
 
