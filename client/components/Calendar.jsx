@@ -150,7 +150,7 @@ class Calendar extends Component {
       <OuterCalendar>
         <InnerCalendar>
           <CalendarHead>
-            <div>
+            <div className="head">
               <span
                 role="button"
                 onClick={async () => {
@@ -178,7 +178,7 @@ class Calendar extends Component {
               </span>
             </div>
           </CalendarHead>
-          <CalendarBody>
+          <CalendarBody className="calendar-body">
             <div className="weekday">
               <span>S</span>
               <span>M</span>
