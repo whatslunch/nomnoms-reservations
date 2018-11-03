@@ -5,10 +5,14 @@
  *   https://github.com/reactorcore/eslint-config-hackreactor
  */
 
-{
-  parser: 'babel-eslint',
-  'plugins': [
-    'react'
-  ],
-  'extends': ['eslint:recommended', 'plugin:react/recommended']
+module.exports = {
+  'parser': 'babel-eslint',
+  'extends': 'airbnb',
+  'env': {
+    'browser': true,
+    'node': true,
+  },
+  'rules': {
+     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],  
+  },
 }

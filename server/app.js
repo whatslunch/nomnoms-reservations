@@ -1,7 +1,8 @@
 const path = require('path');
 const express = require('express');
-const app = express();
 const db = require('./database');
+
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,10 +30,8 @@ app.get('/api/:restaurant_id/hour', (req, res) => {
   });
 });
 
-app.get('/:restaurant_id/', function(req, res) {
+app.get('/:restaurant_id/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.listen(5882, () => {
-  console.log('server initiated');
-})
+app.listen(5882);

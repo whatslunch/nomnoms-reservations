@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -18,7 +19,7 @@ const TimeBox = styled.li`
     margin: auto;
     cursor: pointer;
     &.left {
-      left: 10px;
+      left: 14px;
     }
     &.right {
       right: 6px;
@@ -39,42 +40,80 @@ const TimeBox = styled.li`
 `;
 
 class Time extends Component {
+  static propTypes = {
+    hours: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  }
 
   constructor(props) {
     super(props);
     this.state = {
-      timeArr: []
+      timeArr: [],
     };
   }
 
   componentDidUpdate() {
-  }
-
-  populateHours() {
-    let hours = this.props.hours;
-    let time = hours.opening_hour;
-    const timeArr = [];
-    while (hours.opening_hour !== hours.closing_hour) {
-      timeArr.push(time);
-      time = hours.opening_hour.match(/\d/).join('');
-      console.log(time);
+    const { hours } = this.props;
+    if (hours) {
+      this.populateHours();
     }
   }
 
+  populateHours() {
+    const { timeArr } = this.state;
+    const { hours } = this.props;
+    new Promise((resolve, reject) => {
+      if (timeArr.length > 0) {
+        reject();
+      } else {
+        resolve();
+      }
+    })
+      .then(() => {
+        let time = hours.opening_hour;
+        const newTimeArr = [];
+        while (time !== hours.closing_hour) {
+          newTimeArr.push(time);
+          time = moment(time, 'kk:mm').add(30, 'minutes').format('kk:mm');
+        }
+        newTimeArr.push(time);
+        this.setState({
+          timeArr: newTimeArr,
+        });
+      })
+      .catch(() => {});
+  }
+
   render() {
+    const { timeArr } = this.state;
+    if (timeArr.length > 0) {
+      return (
+        <TimeBox>
+          <span className="left">
+            <i className="far fa-clock" />
+          </span>
+          <select>
+            {timeArr.map(time => (
+              <option>{time}</option>
+            ))}
+          </select>
+          <span className="right">
+            <i className="fas fa-caret-down" />
+          </span>
+        </TimeBox>
+      );
+    }
     return (
       <TimeBox>
         <span className="left">
-          <i class="far fa-clock"></i>
+          <i className="far fa-clock" />
         </span>
-        <select></select>
+        <select />
         <span className="right">
-          <i className="fas fa-caret-down"></i>
+          <i className="fas fa-caret-down" />
         </span>
       </TimeBox>
     );
   }
-
 }
 
 export default Time;
