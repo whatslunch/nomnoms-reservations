@@ -46,36 +46,40 @@ class ReservationForm extends Component {
     super(props);
     this.state = {
       dateClicked: false,
-      selectedDate: null,
-      selectedMonth: null,
-      selectedYear: null,
-      firstWeekday: null,
+      today: {
+        day: parseInt(moment().format('D'), 10),
+        month: parseInt(moment().format('M'), 10),
+        year: parseInt(moment().format('YYYY'), 10),
+      },
+      selectedDate: {},
+      browseDate: {},
+      firstWeekday: moment().startOf('month').format('d'),
       monthGrid: [],
     };
     this.toggleCalendar = this.toggleCalendar.bind(this);
+    this.toggleSelected = this.toggleSelected.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.generateCalendar = this.generateCalendar.bind(this);
-    this.updateSelectedDate = this.updateSelectedDate.bind(this);
   }
 
   componentDidMount() {
-    const today = moment().format('dddd, MMMM D, YYYY');
-    const month = parseInt(moment().format('M'), 10);
-    const year = parseInt(moment().format('YYYY'), 10);
-    const firstWeekday = moment().startOf('month').format('d');
+    const { today: { day, month, year } } = this.state;
     this.setState({
-      selectedDate: today,
-      selectedMonth: month,
-      selectedYear: year,
-      firstWeekday,
+      selectedDate: { day, month, year },
+      browseDate: { month, year },
     });
   }
 
   generateCalendar() {
-    const { selectedMonth, firstWeekday } = this.state;
+    const {
+      firstWeekday,
+      browseDate: {
+        month,
+      },
+    } = this.state;
     const daysOnMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    const days = daysOnMonth[selectedMonth - 1];
+    const days = daysOnMonth[month - 1];
     const output = [];
     let week = [];
     for (let i = 0; i < firstWeekday; i += 1) {
@@ -99,41 +103,51 @@ class ReservationForm extends Component {
   }
 
   previousMonth() {
-    const { selectedMonth, selectedYear } = this.state;
-    let updatedMonth = selectedMonth - 1;
-    let updatedYear = selectedYear;
+    const { browseDate: { month, year } } = this.state;
+    let updatedMonth = month - 1;
+    let updatedYear = year;
     if (updatedMonth === 0) {
       updatedMonth = 12;
-      updatedYear = selectedYear - 1;
+      updatedYear = year - 1;
     }
     const updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d');
-    this.setState({
-      selectedMonth: updatedMonth,
-      selectedYear: updatedYear,
+    this.setState(prevState => ({
+      browseDate: Object.assign({}, prevState.browseDate, {
+        month: updatedMonth,
+        year: updatedYear,
+      }),
       firstWeekday: updatedWeekday,
-    });
+    }));
   }
 
   nextMonth() {
-    const { selectedMonth, selectedYear } = this.state;
-    let updatedMonth = selectedMonth + 1;
-    let updatedYear = selectedYear;
+    const { browseDate: { month, year } } = this.state;
+    let updatedMonth = month + 1;
+    let updatedYear = year;
     if (updatedMonth === 13) {
       updatedMonth = 1;
-      updatedYear = selectedYear + 1;
+      updatedYear = year + 1;
     }
     const updatedWeekday = moment(`${updatedYear} ${updatedMonth}`, 'YYYY MM').format('d');
-    this.setState({
-      selectedMonth: updatedMonth,
-      selectedYear: updatedYear,
+    this.setState(prevState => ({
+      browseDate: Object.assign({}, prevState.browseDate, {
+        month: updatedMonth,
+        year: updatedYear,
+      }),
       firstWeekday: updatedWeekday,
-    });
+    }));
   }
 
-  updateSelectedDate(updatedDate) {
-    this.setState({
-      selectedDate: updatedDate,
-    });
+  toggleSelected(event) {
+    if (!event.target.classList.contains('disabled')) {
+      const { browseDate, selectedDate } = this.state;
+      this.setState({
+        selectedDate: Object.assign({}, browseDate, {
+          day: parseInt(event.target.textContent, 10),
+        }),
+      });
+      this.toggleCalendar();
+    }
   }
 
   toggleCalendar() {
@@ -144,23 +158,24 @@ class ReservationForm extends Component {
 
   render() {
     const {
-      selectedDate, selectedMonth, selectedYear, dateClicked, monthGrid,
+      today, dateClicked, monthGrid, browseDate, selectedDate,
     } = this.state;
     const { hours } = this.props;
-    const header = moment(`${selectedMonth} ${selectedYear}`, 'M YYYY').format('MMMM YYYY');
+    const header = moment(`${browseDate.month} ${browseDate.year}`, 'M YYYY').format('MMMM YYYY');
     const weekday = moment().format('d');
     let calendar;
     if (dateClicked) {
       calendar = (
         <Calendar
-          header={header}
+          today={today}
+          browseDate={browseDate}
           selectedDate={selectedDate}
           previousMonth={this.previousMonth}
           nextMonth={this.nextMonth}
           generateCalendar={this.generateCalendar}
+          toggleSelected={this.toggleSelected}
           toggleCalendar={this.toggleCalendar}
           monthGrid={monthGrid}
-          updateSelectedDate={this.updateSelectedDate}
         />
       );
     }
