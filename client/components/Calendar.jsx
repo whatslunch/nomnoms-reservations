@@ -80,78 +80,53 @@ const CalendarBody = styled.div`
     }
   }
 `;
+CalendarBody.displayName = 'CalendarBody';
 
 class Calendar extends Component {
   static propTypes = {
     generateCalendar: PropTypes.func.isRequired,
-    updateSelectedDate: PropTypes.func.isRequired,
-    toggleCalendar: PropTypes.func.isRequired,
+    toggleSelected: PropTypes.func.isRequired,
     previousMonth: PropTypes.func.isRequired,
     nextMonth: PropTypes.func.isRequired,
     monthGrid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-    selectedDate: PropTypes.string.isRequired,
-    header: PropTypes.string.isRequired,
+    selectedDate: PropTypes.objectOf(PropTypes.number).isRequired,
+    browseDate: PropTypes.objectOf(PropTypes.number).isRequired,
+    today: PropTypes.objectOf(PropTypes.number).isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    this.toggleSelected = this.toggleSelected.bind(this);
-  }
 
   componentDidMount() {
     const { generateCalendar } = this.props;
     generateCalendar();
   }
 
-  componentDidUpdate() {
-    this.updateCalendar();
-  }
-
-  updateCalendar() {
-    const { selectedDate } = this.props;
-    const date = moment(selectedDate, 'dddd, MMMM D, YYYY').format('D');
-    const month = moment(selectedDate, 'dddd, MMMM D, YYYY').format('MMMM YYYY');
-    const todayDay = parseInt(moment().format('D'), 10);
-    const todayMonth = parseInt(moment().format('M'), 10);
-    const todayYear = parseInt(moment().format('YYYY'), 10);
-    const table = document.querySelector('.weekday').parentElement.childNodes;
-    for (let i = 1; i < table.length; i += 1) {
-      for (let j = 0; j < table[i].children.length; j += 1) {
-        table[i].children[j].className = '';
-        const time = moment(document.querySelector('.month').textContent, 'MMMM, YYYY');
-        if (
-          (parseInt(time.format('YYYY'), 10) < todayYear)
-          || (parseInt(time.format('M'), 10) < todayMonth && parseInt(time.format('YYYY'), 10) <= todayYear)
-          || (parseInt(table[i].children[j].textContent, 10) < todayDay && parseInt(time.format('M'), 10) <= todayMonth && parseInt(time.format('YYYY'), 10) <= todayYear)
-        ) {
-          table[i].children[j].classList.add('disabled');
-        } else if (table[i].children[j].textContent === date && month === document.querySelector('.month').textContent) {
-          table[i].children[j].classList.add('selected');
-        }
-      }
-    }
-  }
-
-  toggleSelected(event) {
-    if (!event.target.classList.contains('disabled')) {
-      const { updateSelectedDate, toggleCalendar } = this.props;
-      const selected = `${event.target.textContent} ${document.querySelector('span.month').textContent}`;
-      const selectedDay = moment(selected, 'D MMMM YYYY').format('dddd, MMMM D, YYYY');
-      updateSelectedDate(selectedDay);
-      toggleCalendar();
-    }
-  }
-
   render() {
     const {
-      previousMonth, nextMonth, generateCalendar, header, monthGrid,
+      previousMonth, nextMonth, generateCalendar, monthGrid, toggleSelected,
+      selectedDate: {
+        day: targetDay,
+        month: targetMonth,
+        year: targetYear,
+      },
+      today: {
+        day: todayDay,
+        month: todayMonth,
+        year: todayYear,
+      },
+      browseDate: {
+        day: browseDay,
+        month: browseMonth,
+        year: browseYear,
+      },
     } = this.props;
+    const header = moment(`${browseMonth} ${browseYear}`, 'M YYYY').format('MMMM YYYY');
+
     return (
       <OuterCalendar>
         <InnerCalendar>
           <CalendarHead>
-            <div>
+            <div className="head">
               <span
+                id="left"
                 role="button"
                 onClick={async () => {
                   await new Promise((resolve) => {
@@ -165,6 +140,7 @@ class Calendar extends Component {
               </span>
               <span className="month">{header}</span>
               <span
+                id="right"
                 role="button"
                 onClick={async () => {
                   await new Promise((resolve) => {
@@ -190,9 +166,29 @@ class Calendar extends Component {
             </div>
             {monthGrid.map(week => (
               <div>
-                {week.map(day => (
-                  <span role="button" onClick={this.toggleSelected}>{day}</span>
-                ))}
+                {week.map((day) => {
+                  if (
+                    (browseYear < todayYear)
+                    || (browseMonth < todayMonth && browseYear <= todayYear)
+                    || (day < todayDay && browseMonth <= todayMonth && browseYear <= todayYear)
+                  ) {
+                    return (
+                      <span className="disabled" role="button" onClick={toggleSelected}>{day}</span>
+                    );
+                  }
+                  if (
+                    day === targetDay
+                    && browseMonth === targetMonth
+                    && browseYear === targetYear
+                  ) {
+                    return (
+                      <span className="selected" role="button" onClick={toggleSelected}>{day}</span>
+                    );
+                  }
+                  return (
+                    <span role="button" onClick={toggleSelected}>{day}</span>
+                  );
+                })}
               </div>
             ))}
           </CalendarBody>

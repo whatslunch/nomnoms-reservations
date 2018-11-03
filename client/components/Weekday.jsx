@@ -15,27 +15,38 @@ const WeekdayWrapper = styled.div`
     &.hours {
       flex-grow: 3;
     }
+    &.open {
+      color: #41a700;
+      font-size: 12px;
+      font-weight: bold;
+      padding-right: 8px;
+    }
+    &.closed {
+      font-size: 12px;
+      font-weight: bold;
+      color: #d32323;
+      padding-right: 8px;
+    }
   }
-`;
-
-const Today = styled.span`
-  color: #41a700;
-  font-size: 12px;
-  font-weight: bold;
-  padding-right: 8px;
 `;
 
 const Weekday = ({ weekday }) => {
   const day = moment(weekday.weekday, 'd').format('ddd');
   const opening = moment(weekday.opening_hour, 'kk:mm').format('hh:mm a');
   const closing = moment(weekday.closing_hour, 'kk:mm').format('hh:mm a');
+  const todayDay = moment().format('d');
+  const todayHour = moment().format('kk');
   let today;
   if (
-    parseInt(moment().format('d'), 10) === parseInt(weekday.weekday, 10)
-    && parseInt(moment().format('kk'), 10) <= parseInt(moment(weekday.closing_hour, 'kk:mm').format('kk'), 10)
-    && parseInt(moment().format('kk'), 10) >= parseInt(moment(weekday.opening_hour, 'kk:mm').format('kk'), 10)
+    parseInt(todayDay, 10) === parseInt(weekday.weekday, 10)
+    && parseInt(todayHour, 10) <= parseInt(moment(weekday.closing_hour, 'kk:mm').format('kk'), 10)
+    && parseInt(todayHour, 10) >= parseInt(moment(weekday.opening_hour, 'kk:mm').format('kk'), 10)
   ) {
-    today = <Today>Open now</Today>;
+    today = <span className="open">Open now</span>;
+  } else if (
+    parseInt(moment().format('d'), 10) === parseInt(weekday.weekday, 10)
+  ) {
+    today = <span className="closed">Closed Now</span>;
   }
   return (
     <WeekdayWrapper>
@@ -54,7 +65,7 @@ const Weekday = ({ weekday }) => {
 };
 
 Weekday.propTypes = {
-  weekday: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  weekday: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Weekday;

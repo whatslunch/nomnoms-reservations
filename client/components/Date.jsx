@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import styled from 'styled-components';
 
 const DateBox = styled.li`
@@ -34,21 +35,24 @@ const DateBox = styled.li`
   }
 `;
 
-const Date = ({ toggleCalendar, selectedDate }) => (
-  <DateBox onClick={toggleCalendar}>
-    <span className="left">
-      <i className="far fa-calendar" />
-    </span>
-    <input type="text" value={selectedDate} />
-    <span className="right">
-      <i className="fas fa-caret-down" />
-    </span>
-  </DateBox>
-);
+const Date = ({ toggleCalendar, selectedDate: { day, month, year } }) => {
+  const date = moment(`${day}, ${month}, ${year}`, 'D, MM, YYYY').format('dddd, MMMM D, YYYY');
+  return (
+    <DateBox onClick={toggleCalendar}>
+      <span className="left">
+        <i className="far fa-calendar" />
+      </span>
+      <input type="text" value={date} />
+      <span className="right">
+        <i className="fas fa-caret-down" />
+      </span>
+    </DateBox>
+  );
+};
 
 Date.propTypes = {
   toggleCalendar: PropTypes.func.isRequired,
-  selectedDate: PropTypes.func.isRequired,
+  selectedDate: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
 

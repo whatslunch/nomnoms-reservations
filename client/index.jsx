@@ -101,6 +101,8 @@ class App extends Component {
   }
 }
 
+export default App;
+
 render(
   <App />,
   document.querySelector('#reservation-container'),
