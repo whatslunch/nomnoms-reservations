@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const OuterCalendar = styled.li`
   width: 100%;
@@ -54,6 +55,15 @@ const CalendarBody = styled.div`
       border-top: 1px solid #ccc;
       border-right: 1px solid #ccc;
       font-size: 14px;
+      &.selected {
+        background-color: rgba(207,18,0,0.8);
+        color: white;
+        font-weight: bold;
+      }
+      &.disabled {
+        color: #e6e6e6;
+        cursor: not-allowed;
+      }
     }
     &.weekday {
       span {
@@ -62,7 +72,7 @@ const CalendarBody = styled.div`
         color: #d32323;
         font-size: 12px;
         font-weight: bold;
-        &:last-of-type{
+        &:last-of-type {
           border-right: 1px solid #ccc;
         }
       }
@@ -74,61 +84,55 @@ class Calendar extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      startingWeekDay: 1,
-      month: 10,
-      monthGrid: []
-    };
+    this.toggleSelected = this.toggleSelected.bind(this);
   } 
 
   componentDidMount() {
-    let month = this.generateCalendar();
-    this.setState({
-      monthGrid: month
-    });
+    this.props.generateCalendar();
   }
 
-  generateCalendar() {
-    let days;
-    let month = this.state.month;
-    if (
-      month === 1 ||
-      month === 3 ||
-      month === 5 ||
-      month === 7 ||
-      month === 8 ||
-      month === 10 ||
-      month === 12
-    ) {
-      days = 31;
-    } else if (
-      month === 4 ||
-      month === 6 ||
-      month === 9 ||
-      month === 11
-    ) {
-      days = 30;
-    } else {
-      days = 28;
-    }
-    let output = [];
-    let week = [];
-    for (let i = 0; i < this.state.startingWeekDay; i++) {
-      week.push(null);
-    }
-    for (let j = 1; j <= days; j++) {
-      week.push(j);
-      if (week.length === 7) {
-        output.push(week);
-        week = [];
-      } else if (j === days) {
-        while (week.length < 7) {
-          week.push(null);
+  componentDidUpdate() {
+    this.updateCalendar();
+  }
+
+  updateCalendar() {
+    const date = moment(this.props.selectedDate, 'dddd, MMMM D, YYYY').format('D');
+    const month = moment(this.props.selectedDate, 'dddd, MMMM D, YYYY').format('MMMM YYYY');
+    const todayDay = parseInt(moment().format('D'));
+    const todayMonth = parseInt(moment().format('M'));
+    const todayYear = parseInt(moment().format('YYYY'));
+    const table = document.querySelector('.weekday').parentElement.childNodes;
+    for (let i = 1; i < table.length; i++) {
+      for (let square of table[i].children) {
+        square.className = '';
+        const time = moment(document.querySelector('.month').textContent, 'MMMM, YYYY');
+        if (
+          (parseInt(time.format('YYYY')) < todayYear) ||
+          (parseInt(time.format('M')) < todayMonth && parseInt(time.format('YYYY')) <= todayYear) ||
+          (parseInt(square.textContent) < todayDay && parseInt(time.format('M')) <= todayMonth && parseInt(time.format('YYYY')) <= todayYear)
+        ) {
+          square.classList.add('disabled');
+        } else if (square.textContent === date && month === document.querySelector('.month').textContent) {
+          square.classList.add('selected');
         }
-        output.push(week);
       }
-    } 
-    return output;
+    }
+  }
+
+  disablePastDates() {
+    const date = moment(this.props.selectedDate, 'dddd, MMMM D, YYYY').format('D');
+    const month = moment(this.props.selectedDate, 'dddd, MMMM D, YYYY').format('MMMM YYYY');
+    const table = document.querySelector('.weekday').parentElement.childNodes;
+  
+  }
+
+  toggleSelected(event) {
+    if (!event.target.classList.contains('disabled')) {
+      const selected = `${event.target.textContent} ${document.querySelector('span.month').textContent}`;
+      const selectedDay = moment(selected, 'D MMMM YYYY').format('dddd, MMMM D, YYYY')
+      this.props.updateSelectedDate(selectedDay);
+      this.props.toggleCalendar();
+    }
   }
 
   render() {
@@ -137,9 +141,25 @@ class Calendar extends Component {
         <InnerCalendar>
           <CalendarHead>
             <div>
-              <span><i className="fas fa-angle-double-left"></i></span>
-              <span className="month">October 2018</span>
-              <span><i className="fas fa-angle-double-right"></i></span>
+              <span
+                onClick={async () => {
+                  await new Promise((resolve, reject) => {
+                    this.props.previousMonth();
+                    resolve();
+                  });
+                  this.props.generateCalendar();
+                }}
+              ><i className="fas fa-angle-double-left"></i></span>
+              <span className="month">{this.props.header}</span>
+              <span
+                onClick={async () => {
+                  await new Promise((resolve, reject) => {
+                    this.props.nextMonth();
+                    resolve();
+                  });
+                  this.props.generateCalendar();
+                }}
+              ><i className="fas fa-angle-double-right"></i></span>
             </div>
           </CalendarHead>
           <CalendarBody>
@@ -152,9 +172,9 @@ class Calendar extends Component {
               <span>F</span>
               <span>S</span>
             </div>
-            {this.state.monthGrid.map(week => (
+            {this.props.monthGrid.map(week => (
               <div>{week.map(day => (
-                <span>{day}</span>
+                <span onClick={this.toggleSelected}>{day}</span>
               ))}</div>
             ))}
           </CalendarBody>

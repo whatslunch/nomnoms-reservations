@@ -7,59 +7,43 @@ const DateBox = styled.li`
   box-sizing: border-box;
   position: relative;
   cursor: pointer;
-`;
-
-const IconWrapper = styled.span`
-  position: absolute; 
-  left: 14px;
-  top: 0;
-  bottom: 0;
-  height: 20px;
-  width: 14px;
-  margin: auto;
-`;
-
-const InputWrapper = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  height: 30px;
-  padding: 5px 9px;
-  padding-left: 30px;
-  border-radius: 3px;
-  cursor: pointer;
-`;
-
-const TriangleWrapper = styled.span`
-  position: absolute; 
-  right: 6px;
-  top: 0;
-  bottom: 0;
-  height: 20px;
-  width: 14px;
-  margin: auto;
-`;
-
-class Date extends Component {
-
-  constructor(props) {
-    super(props);
+  span {
+    top: 0;
+    bottom: 0;
+    height: 20px;
+    width: 14px;
+    margin: auto;
+    position: absolute;
+    &.left {
+      left: 14px;
+    }
+    &.right {
+      right: 6px;
+    }
   }
-
-  render() {
-    return (
-      <DateBox onClick={this.props.toggleCalendar}>
-        <IconWrapper>
-          <i class="far fa-calendar"></i>
-        </IconWrapper>
-        <InputWrapper type="text" value="Hey" />
-        <TriangleWrapper>
-          <i className="fas fa-caret-down"></i>
-        </TriangleWrapper>
-      </DateBox>   
-    );
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    height: 30px;
+    padding: 5px 9px;
+    padding-left: 30px;
+    border-radius: 3px;
+    cursor: pointer;
   }
+`;
 
-}
+const Date = (props) => (
+  <DateBox onClick={props.toggleCalendar}>
+    <span className="left">
+      <i class="far fa-calendar"></i>
+    </span>
+    <input type="text" value={props.selectedDate} />
+    <span className="right">
+      <i className="fas fa-caret-down"></i>
+    </span>
+  </DateBox>   
+);
+
 
 export default Date;

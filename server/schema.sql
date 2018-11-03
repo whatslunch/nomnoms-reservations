@@ -20,8 +20,7 @@ CREATE TABLE reservation
 
   id INT(11) NOT NULL AUTO_INCREMENT,
   reservee VARCHAR(50) NOT NULL,
-  date DATE NOT NULL,
-  time TIME NOT NULL,
+  time DATETIME NOT NULL,
   restaurant_id INT(11) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
@@ -32,7 +31,7 @@ CREATE TABLE hour
 (
 
   id INT (11) NOT NULL AUTO_INCREMENT, 
-  weekday VARCHAR(20) NOT NULL,
+  weekday INT(11) NOT NULL,
   opening_hour TIME NOT NULL,
   closing_hour TIME NOT NULL,
   restaurant_id INT(11) NOT NULL,
