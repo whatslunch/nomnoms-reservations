@@ -16,26 +16,17 @@ const today = {
   year: 2018,
 };
 
-const mockToggleSelected = jest.fn();
-
-let mockGenerateCalendar = jest.fn();
+const mockGenerateCalendar = jest.fn();
 
 const shallowWrap = shallow(
   <Calendar
     monthGrid={monthGrid}
     generateCalendar={mockGenerateCalendar}
-    toggleSelected={mockToggleSelected}
     selectedDate={today}
     today={today}
     browseDate={today}
   />,
 );
-
-mockGenerateCalendar = jest.fn(() => {
-  shallowWrap.setProps({
-    monthGrid,
-  });
-});
 
 describe('<Calendar />', () => {
   test('contains 3 span elements within `head` div', () => {
@@ -76,12 +67,5 @@ describe('<Calendar />', () => {
   test('generateCalendar is invoked when right icon is clicked', () => {
     shallowWrap.find('#right').simulate('click');
     expect(mockGenerateCalendar).toBeCalled();
-  });
-
-  test('when span element that corresponds to day 27 is clicked, it should have `selected` class', () => {
-    const clickedDay = shallowWrap.find('CalendarBody div').at(4).find('span').at(6);
-    expect(clickedDay.hasClass('selected')).toBe(false);
-    clickedDay.simulate('click');
-    expect(clickedDay.hasClass('selected')).toBe(true);
   });
 });
