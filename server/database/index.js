@@ -12,8 +12,8 @@ connection.connect();
 connection.getReservations = (id, callback) => {
   const query = `
     SELECT reservation.reservee,reservation.time,restaurant.name FROM reservation 
-    INNER JOIN restaurant ON reservation.restaurant_id = restaurant.id
-    WHERE restaurant.id = ${id}
+    INNER JOIN restaurant ON reservation.restaurantId = restaurant.id
+    WHERE restaurantId = ${id}
   `;
   connection.query(query, (err, result) => {
     if (err) {
@@ -26,9 +26,9 @@ connection.getReservations = (id, callback) => {
 
 connection.getHours = (id, callback) => {
   const query = `
-    SELECT hour.weekday,hour.opening_hour,hour.closing_hour,restaurant.name FROM hour
-    INNER JOIN restaurant ON hour.restaurant_id = restaurant.id
-    WHERE restaurant.id = ${id}
+    SELECT hour.weekday,hour.openingHour,hour.closingHour,restaurant.name FROM hour
+    INNER JOIN restaurant ON hour.restaurantId = restaurant.id
+    WHERE restaurantId = ${id}
   `;
   connection.query(query, (err, result) => {
     if (err) {

@@ -113,7 +113,6 @@ class Calendar extends Component {
         year: todayYear,
       },
       browseDate: {
-        day: browseDay,
         month: browseMonth,
         year: browseYear,
       },

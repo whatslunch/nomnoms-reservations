@@ -42,7 +42,7 @@ const db = require('./index.js');
         restaurant_id: restId,
       });
 
-      const query = 'INSERT INTO reservation(reservee, time, restaurant_id) VALUES(?, CAST(? AS DATETIME), ?)';
+      const query = 'INSERT INTO reservation(reservee, time, restaurantId) VALUES(?, CAST(? AS DATETIME), ?)';
       db.query(query, [randomReservee, randomTime, restId], (err) => {
         if (err) { throw new Error(err); }
       });
@@ -80,7 +80,7 @@ const db = require('./index.js');
           closingHour,
           restaurant_id: restId,
         });
-        const query = 'INSERT INTO hour(weekday, openingHour, closingHour, restaurant_id) VALUES(?, ?, ?, ?)';
+        const query = 'INSERT INTO hour(weekday, openingHour, closingHour, restaurantId) VALUES(?, ?, ?, ?)';
         db.query(query, [j, openingHour, closingHour, restId], (err) => {
           if (err) { throw new Error(err); }
         });
