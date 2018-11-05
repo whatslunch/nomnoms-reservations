@@ -8,7 +8,7 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "build": "webpack -w",
+    "build": "webpack",
     "start": "nodemon server/app.js",
     "db": "mysql -u root -p < server/schema.sql",
     "seed": "node server/database/seed.js",
