@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
 app.get('/api/:restaurant_id/reservation', (req, res) => {
   const id = req.params.restaurant_id;
@@ -30,8 +30,8 @@ app.get('/api/:restaurant_id/hour', (req, res) => {
   });
 });
 
-app.get('/:restaurant_id/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+// app.get('/:restaurant_id/', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../public/index.html'));
+// });
 
 app.listen(5882);
