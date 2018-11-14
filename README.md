@@ -21,10 +21,12 @@
 
 ## CRUD
 
-| Tables        | Are           | Cool  |
+| Action        | Request       | Route  |  Purpose  |
 | ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| Create        | POST          | /api/:restaurant_id/reservation | insert new reservation |
+| Read          | GET           | /api/:restaurant_id/hour | retrieve restaurant hours |
+| Read          | GET           | /api/:restaurant_id/reservation | retrieve reservation information for a restaurant|
+| Update        | PUT           | /api/:restaurant_id/reservation/:reservation_id | update an existing reservation
+| Delete        | DELETE        | /api/:restaurant_id/reservation/:reservation_id | delete a reservation
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
 const db = require('./database');
@@ -30,8 +31,6 @@ app.get('/api/:restaurant_id/hour', (req, res) => {
   });
 });
 
-// app.get('/:restaurant_id/', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../public/index.html'));
-// });
-
-app.listen(5882);
+app.listen(5882, () => {
+  console.log('server is up on 5882');
+});
