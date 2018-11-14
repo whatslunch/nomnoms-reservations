@@ -31,6 +31,39 @@ app.get('/api/:restaurant_id/hour', (req, res) => {
   });
 });
 
+app.post('/api/:restaurant_id/reservation', (req, res) => {
+  const id = req.params.restaurant_id;
+  db.addReservation(id, req.body, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put('/api/:restaurant_id/reservation/:reservation_id', (req, res) => {
+  const id = req.params.reservation_id;
+  db.updateReservation(id, req.body, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.delete('/api/:restaurant_id/reservation/:reservation_id', (req, res) => {
+  const id = req.params.reservation_id;
+  db.deleteReservation(id, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 app.listen(5882, () => {
   console.log('server is up on 5882');
 });

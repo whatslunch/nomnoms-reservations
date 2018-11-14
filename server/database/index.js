@@ -23,6 +23,41 @@ connection.getReservations = (id, callback) => {
   });
 };
 
+connection.addReservation = (id, data, callback) => {
+  const newData = data;
+  newData.restaurantId = id;
+  const query = 'INSERT INTO reservation SET ?';
+  connection.query(query, newData, (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
+
+connection.updateReservation = (id, newData, callback) => {
+  const query = 'UPDATE reservation SET ?';
+  connection.query(query, newData, (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
+
+connection.deleteReservation = (id, callback) => {
+  const query = `DELETE FROM reservation WHERE id = ${id}`;
+  connection.query(query, (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
+
 connection.getHours = (id, callback) => {
   const query = `
     SELECT hour.weekday,hour.openingHour,hour.closingHour,restaurant.name FROM hour
