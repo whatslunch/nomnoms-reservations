@@ -92,8 +92,8 @@ class Time extends Component {
             <i className="far fa-clock" />
           </span>
           <select>
-            {timeArr.map(time => (
-              <option>{time}</option>
+            {timeArr.map((time, index) => (
+              <option index={time.concat(index)}>{time}</option>
             ))}
           </select>
           <span className="right">

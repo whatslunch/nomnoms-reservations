@@ -140,7 +140,7 @@ class ReservationForm extends Component {
 
   toggleSelected(event) {
     if (!event.target.classList.contains('disabled')) {
-      const { browseDate, selectedDate } = this.state;
+      const { browseDate } = this.state;
       this.setState({
         selectedDate: Object.assign({}, browseDate, {
           day: parseInt(event.target.textContent, 10),
@@ -161,7 +161,6 @@ class ReservationForm extends Component {
       today, dateClicked, monthGrid, browseDate, selectedDate,
     } = this.state;
     const { hours } = this.props;
-    const header = moment(`${browseDate.month} ${browseDate.year}`, 'M YYYY').format('MMMM YYYY');
     const weekday = moment().format('d');
     let calendar;
     if (dateClicked) {

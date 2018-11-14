@@ -12,12 +12,6 @@
   - https://github.com/YumpSF/Recommended-Reviews-Module
   - https://github.com/YumpSF/proxy-david
 
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-
 ## Usage
 
 > First, you need to create the database. Schema file is stored in the server directory. To create scheam, simply type 'npm run db'.
@@ -25,19 +19,7 @@
 
 > Local port to run the module is 5882. 
 
-## Requirements
+## CRUD
 
-- Node 6.13.0
-- etc
 
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
-```
 
