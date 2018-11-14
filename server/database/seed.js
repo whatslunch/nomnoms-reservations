@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const faker = require('faker');
 const moment = require('moment');
 const db = require('./index.js');

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack -d -w",
-    "start": "node server/app.js",
+    "start": "node server/index.js",
     "db": "mysql -u root -p < server/schema.sql",
     "seed": "node server/database/seed.js",
     "test": "jest --coverage"
