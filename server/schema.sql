@@ -20,7 +20,7 @@ CREATE TABLE reservation
 
   id INT(11) NOT NULL AUTO_INCREMENT,
   reservee VARCHAR(50) NOT NULL,
-  time DATETIME NOT NULL,
+  reservationTime DATETIME NOT NULL,
   restaurantId INT(11) NOT NULL,
   PRIMARY KEY (id)
 
