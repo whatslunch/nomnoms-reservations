@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 // create database reservations
 // change username alice to your username and password aliceisawesome to your password
+// change username in package.json file script writedb
 const sequelize = new Sequelize('reservations', 'alice', 'aliceisawesome', {
   host: 'localhost',
   dialect: 'postgres',

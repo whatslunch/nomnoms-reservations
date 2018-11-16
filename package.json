@@ -10,10 +10,9 @@
   "scripts": {
     "build": "webpack -d -w",
     "start": "node server/index.js",
-    "db": "mysql -u root -p < server/schema.sql",
     "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "cleardb": "node server/db2/seed.js",
-    "writedb": "psql -U alice -d reservations < server/schema.sql",
+    "writedb": "psql -U alice -d reservations < server/seed.sql",
     "test": "jest --coverage"
   },
   "dependencies": {
