@@ -11,8 +11,9 @@
     "build": "webpack -d -w",
     "start": "node server/index.js",
     "db": "mysql -u root -p < server/schema.sql",
-    "writefile": "node --max-old-space-size=8192 server/fakeDataGenerator.js",
-    "seed": "node server/db2/seed.js",
+    "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
+    "cleardb": "node server/db2/seed.js",
+    "writedb": "psql -U alice -d reservations < server/schema.sql",
     "test": "jest --coverage"
   },
   "dependencies": {

@@ -28,6 +28,8 @@ const Restaurants = db.define('restaurants', {
     type: Sequelize.TIME,
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 const Reservations = db.define('reservations', {
@@ -49,6 +51,8 @@ const Reservations = db.define('reservations', {
     type: Sequelize.DATE,
     allowNull: false,
   },
+}, {
+  timestamps: false,
 });
 
 Reservations.hasMany(Restaurants, { foreignKey: 'fk_reservation' });

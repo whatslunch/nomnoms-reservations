@@ -8,7 +8,7 @@ const restaurantsCSV = path.join(__dirname, '../data/restaurants.csv');
 const reservationsCSV = path.join(__dirname, '../data/reservations.csv');
 const streamRestaurants = fs.createWriteStream(restaurantsCSV);
 const streamReservations = fs.createWriteStream(reservationsCSV);
-const recordNumber = 1000;
+const recordNumber = 10000000;
 
 const generateRestaurants = () => {
   for (let i = 0; i < recordNumber; i += 1) {
@@ -24,7 +24,7 @@ const generateRestaurants = () => {
     } else {
       openingHour += ':00';
     }
-    let closingHour = 20 + Math.floor(Math.random() * 5);
+    let closingHour = 20 + Math.floor(Math.random() * 4);
     if (Math.random() >= 0.5) {
       closingHour += ':30';
     } else {
@@ -66,7 +66,7 @@ const generateReservations = () => {
         stringRow = stringRow.concat('\r\n');
       }
       streamReservations.write(stringRow);
-      if ((i + 1) % (recordNumber / 30) === 0) {
+      if ((i + 1) % (recordNumber / 50) === 0) {
         console.clear();
         console.log(`${(((i + 1) / recordNumber) * 100).toFixed(2)}% completed`);
       }
