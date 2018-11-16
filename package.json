@@ -10,8 +10,9 @@
   "scripts": {
     "build": "webpack -d -w",
     "start": "node server/index.js",
-    "db": "mysql -u root -p < server/schema.sql",
-    "seed": "node server/database/seed.js",
+    "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
+    "cleardb": "node server/db2/seed.js",
+    "writedb": "psql -U alice -d reservations < server/seed.sql",
     "test": "jest --coverage"
   },
   "dependencies": {
@@ -21,9 +22,11 @@
     "faker": "^4.1.0",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
+    "pg": "^7.6.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "sequelize": "^4.41.2",
     "styled-components": "^4.0.2"
   },
   "devDependencies": {
