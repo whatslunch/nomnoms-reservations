@@ -1,21 +1,23 @@
-DROP DATABASE IF EXISTS reservation_hour;
+DROP DATABASE IF EXISTS reservations;
 
-CREATE DATABASE reservation_hour;
+CREATE DATABASE reservations;
 
-use reservation_hour;
+use reservations;
 
-CREATE TABLE restaurant
+CREATE TABLE restaurants
 (
 
   id INT(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   availableTable INT(11) NOT NULL,
   totalTable INT(11) NOT NULL,
+  openingHour TIME NOT NULL,
+  closingHour TIME NOT NULL,
   PRIMARY KEY (id)
 
 );
 
-CREATE TABLE reservation
+CREATE TABLE reservations
 (
 
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -25,15 +27,3 @@ CREATE TABLE reservation
   PRIMARY KEY (id)
 
 );
-
-CREATE TABLE hour 
-(
-
-  id INT (11) NOT NULL AUTO_INCREMENT, 
-  weekday INT(11) NOT NULL,
-  openingHour TIME NOT NULL,
-  closingHour TIME NOT NULL,
-  restaurantId INT(11) NOT NULL,
-  PRIMARY KEY (id)
-
-)

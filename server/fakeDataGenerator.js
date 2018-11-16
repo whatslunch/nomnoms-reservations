@@ -8,7 +8,7 @@ const restaurantsCSV = path.join(__dirname, '../data/restaurants.csv');
 const reservationsCSV = path.join(__dirname, '../data/reservations.csv');
 const streamRestaurants = fs.createWriteStream(restaurantsCSV);
 const streamReservations = fs.createWriteStream(reservationsCSV);
-const recordNumber = 1000000;
+const recordNumber = 1000;
 
 const generateRestaurants = () => {
   for (let i = 0; i < recordNumber; i += 1) {
@@ -30,7 +30,7 @@ const generateRestaurants = () => {
     } else {
       closingHour += ':00';
     }
-    row.push(i + 1, fakeName, fakeTable, fakeTable, openingHour, closingHour);
+    row.push(fakeName, fakeTable, fakeTable, openingHour, closingHour);
     let stringRow = row.join(',');
     if (i < recordNumber - 1) {
       stringRow = stringRow.concat('\r\n');
@@ -45,28 +45,31 @@ const generateRestaurants = () => {
 };
 
 const generateReservations = () => {
-  const reservationNumber = recordNumber * 1.5;
-  for (let i = 0; i < reservationNumber; i += 1) {
-    const row = [];
-    const resId = Math.floor(Math.random() * reservationNumber) + 1;
-    const fakePerson = `${faker.name.findName()}`;
-    const randomReservation = faker.date.future(0.05);
-    let randomTime = parseInt(12 + (Math.random() * 10), 10);
-    if (Math.random() >= 0.5) {
-      randomTime += ':30:00';
-    } else {
-      randomTime += ':00:00';
-    }
-    const fakeReservation = `${moment(randomReservation).format('YYYY-MM-DD')} ${randomTime}`;
-    row.push(i + 1, resId, fakePerson, fakeReservation);
-    let stringRow = row.join(',');
-    if (i < reservationNumber - 1) {
-      stringRow = stringRow.concat('\r\n');
-    }
-    streamReservations.write(stringRow);
-    if ((i + 1) % (reservationNumber / 30) === 0) {
-      console.clear();
-      console.log(`${(((i + 1) / reservationNumber) * 100).toFixed(2)}% completed`);
+  for (let i = 0; i < recordNumber; i += 1) {
+    const reservationNumber = Math.floor(Math.random() * 5);
+    for (let j = 0; j < reservationNumber; j += 1) {
+      const row = [];
+      const fakePerson = `${faker.name.findName()}`;
+      const randomReservation = faker.date.future(0.05);
+      let randomTime = parseInt(12 + (Math.random() * 10), 10);
+      if (Math.random() >= 0.5) {
+        randomTime += ':30:00';
+      } else {
+        randomTime += ':00:00';
+      }
+      const fakeReservation = `${moment(randomReservation).format('YYYY-MM-DD')} ${randomTime}`;
+      row.push(i + 1, fakePerson, fakeReservation);
+      let stringRow = row.join(',');
+      if (i < recordNumber - 1) {
+        stringRow = stringRow.concat('\r\n');
+      } else if (j < reservationNumber - 1) {
+        stringRow = stringRow.concat('\r\n');
+      }
+      streamReservations.write(stringRow);
+      if ((i + 1) % (recordNumber / 30) === 0) {
+        console.clear();
+        console.log(`${(((i + 1) / recordNumber) * 100).toFixed(2)}% completed`);
+      }
     }
   }
   streamReservations.end();
