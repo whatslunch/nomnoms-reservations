@@ -13,11 +13,13 @@
     "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "cleardb": "node server/db2/seed.js",
     "writedb": "psql -U alice -d reservations < server/seed.sql",
+    "seedcassandra": "cqlsh --file 'server/seed.cql'",
     "test": "jest --coverage"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "axios": "^0.18.0",
+    "cassandra-driver": "^3.5.0",
     "express": "^4.16.4",
     "faker": "^4.1.0",
     "moment": "^2.22.2",

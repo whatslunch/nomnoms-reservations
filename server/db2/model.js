@@ -8,6 +8,10 @@ const Restaurants = db.define('restaurants', {
     autoIncrement: true,
     allowNull: false,
   },
+  uuid: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -37,6 +41,10 @@ const Reservations = db.define('reservations', {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
+  },
+  uuid: {
+    type: Sequelize.STRING,
     allowNull: false,
   },
   restaurantId: {
