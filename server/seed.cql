@@ -22,5 +22,5 @@ CREATE TABLE reservations (
   reservationTime text
 );
 
-COPY restaurants (id, name, availableTable, totalTable, openingHour, closingHour) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/casrestaurants.csv' WITH DELIMITER = ',' AND HEADER = FALSE;
-COPY reservations (id, restaurantId, reservee, reservationTime) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/casreservations.csv' WITH DELIMITER = ',' AND HEADER = FALSE;
+COPY restaurants (id, name, availableTable, totalTable, openingHour, closingHour) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/restaurants.csv' WITH DELIMITER = ',' AND HEADER = FALSE;
+COPY reservations (id, restaurantId, reservee, reservationTime) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/reservations.csv' WITH DELIMITER = ',' AND HEADER = FALSE;

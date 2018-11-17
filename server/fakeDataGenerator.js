@@ -8,7 +8,7 @@ const restaurantsCSV = path.join(__dirname, '../data/restaurants.csv');
 const reservationsCSV = path.join(__dirname, '../data/reservations.csv');
 const streamRestaurants = fs.createWriteStream(restaurantsCSV);
 const streamReservations = fs.createWriteStream(reservationsCSV);
-const recordNumber = 10000000;
+const recordNumber = 100;
 
 const generateRestaurants = () => {
   for (let i = 0; i < recordNumber; i += 1) {
@@ -30,7 +30,7 @@ const generateRestaurants = () => {
     } else {
       closingHour += ':00';
     }
-    row.push(fakeName, fakeTable, fakeTable, openingHour, closingHour);
+    row.push(faker.random.uuid(), fakeName, fakeTable, fakeTable, openingHour, closingHour);
     let stringRow = row.join(',');
     if (i < recordNumber - 1) {
       stringRow = stringRow.concat('\r\n');
@@ -58,7 +58,7 @@ const generateReservations = () => {
         randomTime += ':00:00';
       }
       const fakeReservation = `${moment(randomReservation).format('YYYY-MM-DD')} ${randomTime}`;
-      row.push(i + 1, fakePerson, fakeReservation);
+      row.push(faker.random.uuid(), i + 1, fakePerson, fakeReservation);
       let stringRow = row.join(',');
       if (i < recordNumber - 1) {
         stringRow = stringRow.concat('\r\n');
