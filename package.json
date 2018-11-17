@@ -13,7 +13,7 @@
     "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "cleardb": "node server/db2/seed.js",
     "writedb": "psql -U alice -d reservations < server/seed.sql",
-    "seedcassandra": "/Users/zouboyun/Downloads/apache-cassandra-3.11.3/bin/cqlsh --file 'server/seed.cql'",
+    "seedcassandra": "cqlsh --file 'server/seed.cql'",
     "test": "jest --coverage"
   },
   "dependencies": {
