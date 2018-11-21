@@ -6,21 +6,20 @@ AND durable_writes = false;
 
 USE reservations;
 
-CREATE TABLE restaurants (
-  id uuid PRIMARY KEY,
-  name text,
-  availableTable int,
-  totalTable int,
-  openingHour text,
-  closingHour text
-);
-
-CREATE TABLE reservations (
-  id uuid PRIMARY KEY,
-  restaurantId int,
+CREATE TYPE reservation (
   reservee text,
-  reservationTime text
+  reservation_time text
 );
 
-COPY restaurants (id, name, availableTable, totalTable, openingHour, closingHour) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/restaurants.csv' WITH DELIMITER = ',' AND HEADER = FALSE;
-COPY reservations (id, restaurantId, reservee, reservationTime) FROM '/Users/zouboyun/Documents/hack-reactor-SDC/nomnoms-reservations/data/reservations.csv' WITH DELIMITER = ',' AND HEADER = FALSE;
+CREATE TABLE restaurants (
+  id int,
+  name text,
+  available_table int,
+  total_table int,
+  opening_hour text,
+  closing_hour text,
+  reservations list<frozen <reservation>>,
+  PRIMARY KEY (id, name)
+);
+
+CREATE INDEX on restaurants(name);

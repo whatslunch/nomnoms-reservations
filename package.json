@@ -10,10 +10,12 @@
   "scripts": {
     "build": "webpack -d -w",
     "start": "node server/index.js",
-    "writefile": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
+    "writepostgres": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
+    "writecassandra": "node --max-old-space-size=5120 server/fakeDataNoSQL.js",
     "clearpostgres": "node server/db2/seed.js",
+    "clearcassandra": "cqlsh --file 'server/seed.cql'",
     "seedpostgres": "psql -U alice -d reservations < server/seed.sql",
-    "seedcassandra": "cqlsh --file 'server/seed.cql'",
+    "seedcassandra": "node server/db1/seed.js",
     "test": "jest --coverage"
   },
   "dependencies": {
