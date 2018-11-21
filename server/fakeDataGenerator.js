@@ -8,7 +8,7 @@ const restaurantsCSV = path.join(__dirname, '../data/restaurants.csv');
 const reservationsCSV = path.join(__dirname, '../data/reservations.csv');
 const streamRestaurants = fs.createWriteStream(restaurantsCSV);
 const streamReservations = fs.createWriteStream(reservationsCSV);
-const recordNumber = 100;
+const recordNumber = 10000000;
 
 const generateRestaurants = () => {
   for (let i = 0; i < recordNumber; i += 1) {
