@@ -42,6 +42,7 @@ const generateRestaurants = () => {
         randomTime += ':00:00';
       }
       const fakeReservation = `${moment(randomReservation).format('YYYY-MM-DD')} ${randomTime}`;
+      reservation.id = j + 1;
       reservation.reservee = fakePerson;
       reservation.reservation_time = fakeReservation;
       reservations.push(reservation);

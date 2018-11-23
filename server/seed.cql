@@ -7,6 +7,7 @@ AND durable_writes = false;
 USE reservations;
 
 CREATE TYPE reservation (
+  id int,
   reservee text,
   reservation_time text
 );

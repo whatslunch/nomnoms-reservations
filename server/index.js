@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const path = require('path');
 const express = require('express');
-const db = require('./database');
+const db = require('./db1/connection');
 
 const app = express();
 
