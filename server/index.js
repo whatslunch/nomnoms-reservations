@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+require('newrelic');
 const path = require('path');
 const express = require('express');
 const uniqueId = require('cassandra-driver').types.Uuid;
