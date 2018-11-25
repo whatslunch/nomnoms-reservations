@@ -42,12 +42,13 @@ const generateRestaurants = () => {
         randomTime += ':00:00';
       }
       const fakeReservation = `${moment(randomReservation).format('YYYY-MM-DD')} ${randomTime}`;
+      reservation.id = faker.random.uuid();
       reservation.reservee = fakePerson;
       reservation.reservation_time = fakeReservation;
       reservations.push(reservation);
       availableTable -= 1;
     }
-    row.id = i + 1;
+    row.id = faker.random.uuid();
     row.name = fakeName;
     row.available_table = availableTable;
     row.total_table = totalTable;

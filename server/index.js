@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
+require('newrelic');
 const path = require('path');
 const express = require('express');
-const db = require('./database');
+const uniqueId = require('cassandra-driver').types.Uuid;
+const connection = require('./db1/connection');
 
 const app = express();
 
@@ -9,57 +11,111 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
-app.get('/api/:restaurant_id/reservation', (req, res) => {
+app.get('/api/:restaurant_id/reservations', (req, res) => {
   const id = req.params.restaurant_id;
-  db.getReservations(id, (err, result) => {
-    if (err) {
-      res.send(err);
+  const query = 'SELECT reservations FROM reservations.restaurants WHERE id = ? ;';
+  connection.execute(query, [id], { prepare: true }, (error, result) => {
+    if (error) {
+      throw error;
+    } else if (result.rows[0].reservations !== null) {
+      res.status(200).send(result.rows[0].reservations);
     } else {
-      res.send(result);
+      res.status(200).send([]);
     }
   });
 });
 
-app.get('/api/:restaurant_id/hour', (req, res) => {
+app.post('/api/:restaurant_id/reservations', (req, res) => {
   const id = req.params.restaurant_id;
-  db.getHours(id, (err, result) => {
-    if (err) {
-      res.send(err);
+  const data = req.body;
+  data.id = uniqueId.random();
+  const query = 'SELECT name, reservations FROM reservations.restaurants WHERE id = ? ;';
+  connection.execute(query, [id], { prepare: true }, (error, result) => {
+    if (error) {
+      throw error;
     } else {
-      res.send(result);
+      const reservations = result.rows[0].reservations || [];
+      const resName = result.rows[0].name;
+      reservations.push(data);
+      const insertQuery = 'UPDATE reservations.restaurants SET reservations = ? WHERE id = ? AND name = ? ;';
+      connection.execute(
+        insertQuery,
+        [reservations, id, resName],
+        { prepare: true },
+        (insertErr) => {
+          if (insertErr) {
+            throw insertErr;
+          } else {
+            res.status(201).send();
+          }
+        },
+      );
     }
   });
 });
 
-app.post('/api/:restaurant_id/reservation', (req, res) => {
-  const id = req.params.restaurant_id;
-  db.addReservation(id, req.body, (err, result) => {
-    if (err) {
-      res.send(err);
+app.put('/api/:restaurant_id/reservations/:reservation_id', (req, res) => {
+  const resId = req.params.restaurant_id;
+  const reserId = req.params.reservation_id;
+  const data = req.body;
+  data.id = reserId;
+  const query = 'SELECT name, reservations FROM reservations.restaurants WHERE id = ? ;';
+  connection.execute(query, [resId], (error, result) => {
+    if (error) {
+      throw error;
     } else {
-      res.send(result);
+      const reservations = result.rows[0].reservations || [];
+      const resName = result.rows[0].name;
+      reservations.forEach((reservation, index) => {
+        if (String(reservation.id) === reserId) {
+          reservations.splice(index, 1, data);
+        }
+      });
+      const updateQuery = 'UPDATE reservations.restaurants SET reservations = ? WHERE id = ? AND name = ? ;';
+      connection.execute(
+        updateQuery,
+        [reservations, resId, resName],
+        { prepare: true },
+        (updateErr) => {
+          if (updateErr) {
+            throw updateErr;
+          } else {
+            res.status(200).send();
+          }
+        },
+      );
     }
   });
 });
 
-app.put('/api/:restaurant_id/reservation/:reservation_id', (req, res) => {
-  const id = req.params.reservation_id;
-  db.updateReservation(id, req.body, (err, result) => {
-    if (err) {
-      res.send(err);
+app.delete('/api/:restaurant_id/reservations/:reservation_id', (req, res) => {
+  const resId = req.params.restaurant_id;
+  const reserId = req.params.reservation_id;
+  const query = 'SELECT name, reservations FROM reservations.restaurants WHERE id = ? ;';
+  connection.execute(query, [resId], (error, result) => {
+    if (error) {
+      throw error;
     } else {
-      res.send(result);
-    }
-  });
-});
-
-app.delete('/api/:restaurant_id/reservation/:reservation_id', (req, res) => {
-  const id = req.params.reservation_id;
-  db.deleteReservation(id, (err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(result);
+      const reservations = result.rows[0].reservations || [];
+      const resName = result.rows[0].name;
+      reservations.forEach((reservation, index) => {
+        if (String(reservation.id) === reserId) {
+          reservations.splice(index, 1);
+        }
+      });
+      const updateQuery = 'UPDATE reservations.restaurants SET reservations = ? WHERE id = ? AND name = ? ;';
+      connection.execute(
+        updateQuery,
+        [reservations, resId, resName],
+        { prepare: true },
+        (deleteErr) => {
+          if (deleteErr) {
+            throw deleteErr;
+          } else {
+            res.status(200).send();
+          }
+        },
+      );
     }
   });
 });

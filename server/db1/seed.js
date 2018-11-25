@@ -17,6 +17,10 @@ readline.on('line', (line) => {
         throw error;
       } else {
         lineCounter += 1;
+        if (lineCounter % 20000 === 0) {
+          console.clear();
+          console.log(`${((lineCounter / 10000000) * 100).toFixed(2)}% completed`);
+        }
         if (lineCounter === 10000000) {
           readline.close();
           connection.shutdown();

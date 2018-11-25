@@ -7,12 +7,13 @@ AND durable_writes = false;
 USE reservations;
 
 CREATE TYPE reservation (
+  id uuid,
   reservee text,
   reservation_time text
 );
 
 CREATE TABLE restaurants (
-  id int,
+  id uuid,
   name text,
   available_table int,
   total_table int,
