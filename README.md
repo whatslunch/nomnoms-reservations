@@ -21,6 +21,6 @@
 
 ## Deployment
 
-# environment setup
-# seeding database
-# start app server
+### environment setup
+### seeding database
+### start app server
