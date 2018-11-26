@@ -50,27 +50,26 @@ class App extends Component {
 
   componentDidMount() {
     const restaurantId = window.location.pathname.slice(1, -1);
-    axios.get(`/api/${restaurantId}/reservation`)
+    axios.get(`/api/${restaurantId}/reservations`)
       .then((response) => {
-        const reservations = response.data.map(reservation => (
+        const reservations = response.data.reservations.map(reservation => (
           Object.assign({}, reservation, {
-            time: moment(reservation.time).format('kk:mm'),
-            date: moment(reservation.time).format('MM YYYY'),
+            time: moment(reservation.reservation_time).format('kk:mm'),
+            date: moment(reservation.reservation_time).format('MM YYYY'),
           })
         ));
-        axios.get(`/api/${restaurantId}/hour`)
-          .then((result) => {
-            const hours = result.data.map(weekday => (
-              Object.assign({}, weekday, {
-                opening_hour: weekday.openingHour.slice(0, 5),
-                closing_hour: weekday.closingHour.slice(0, 5),
-              })
-            ));
-            this.setState({
-              reservations,
-              hours,
-            });
-          });
+        const hours = [];
+        for (let i = 0; i < 7; i += 1) {
+          const hour = {};
+          hour.weekday = i;
+          hour.opening_hour = response.data.opening_hour;
+          hour.closing_hour = response.data.closing_hour;
+          hours.push(hour);
+        }
+        this.setState({
+          reservations,
+          hours,
+        });
       });
   }
 

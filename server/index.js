@@ -13,12 +13,12 @@ app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
 app.get('/api/:restaurant_id/reservations', (req, res) => {
   const id = req.params.restaurant_id;
-  const query = 'SELECT reservations FROM reservations.restaurants WHERE id = ? ;';
+  const query = 'SELECT opening_hour, closing_hour, reservations FROM reservations.restaurants WHERE id = ? ;';
   connection.execute(query, [id], { prepare: true }, (error, result) => {
     if (error) {
       throw error;
     } else if (result.rows[0].reservations !== null) {
-      res.status(200).send(result.rows[0].reservations);
+      res.status(200).send(result.rows[0]);
     } else {
       res.status(200).send([]);
     }
