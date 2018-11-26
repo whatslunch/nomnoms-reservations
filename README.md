@@ -1,13 +1,12 @@
-# Project Name
+# Project Overview
 
 > System Design Capstone project. Refactored the back-end of an existing web application to store 10M+ records in the database, take less than 50ms to query a single record, and handle 10k rps throughput.
 
 ## Related Projects
 
-  - https://github.com/YumpSF/popular-dishes-and-full-menu
-  - https://github.com/YumpSF/overview
-  - https://github.com/YumpSF/Recommended-Reviews-Module
-  - https://github.com/YumpSF/proxy-david
+  - https://github.com/whatslunch/nomnoms-reviews
+  - https://github.com/whatslunch/nomnomsDishesAndMenu
+  - https://github.com/whatslunch/nomnoms-overview
 
 ## CRUD
 
