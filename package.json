@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack -d -w",
-    "start": "nodemon server/index.js",
+    "start": "node server/index.js",
     "writepostgres": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "writecassandra": "node --max-old-space-size=5120 server/fakeDataNoSQL.js",
     "clearpostgres": "node server/db2/seed.js",
