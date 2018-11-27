@@ -16,11 +16,9 @@ app.get('/api/:restaurant_id/reservations', (req, res) => {
   const query = 'SELECT opening_hour, closing_hour, reservations FROM reservations.restaurants WHERE id = ? ;';
   connection.execute(query, [id], { prepare: true }, (error, result) => {
     if (error) {
-      throw error;
-    } else if (result.rows[0].reservations !== null) {
-      res.status(200).send(result.rows[0]);
+      res.status(500).send(error);
     } else {
-      res.status(200).send([]);
+      res.status(200).send(result.rows[0]);
     }
   });
 });
