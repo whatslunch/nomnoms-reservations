@@ -20,6 +20,8 @@
 
 ## Deployment
 
+> This web application is currently deployed on AWS EC2. The instance is probably stopped because I want to save money.
+
 ### environment setup
 ### seeding database
 ### start app server
