@@ -1,7 +1,7 @@
 /* eslint-disable import/no-mutable-exports */
 /* eslint-disable import/no-unresolved */
 import http from 'k6/http';
-import { sleep } from 'k6';
+import { check, sleep } from 'k6';
 
 const ids = [
   '328d7be9-cb00-45f5-961e-0a67408c62d3',
@@ -12,8 +12,8 @@ const ids = [
 ];
 
 export const options = {
-  vus: 1000,
-  duration: '3m',
+  vus: 600,
+  duration: '30m',
   rps: 1000,
 };
 
@@ -25,8 +25,12 @@ export default function () {
   // const url = 'http://localhost:5882/api/51047c6d-95b9-4dbc-a5b8-830ca4b4e340/reservations';
   // const str = JSON.stringify(data);
   // const params = { headers: { 'Content-Type': 'application/json' } };
-  // http.post(url, str, params);
+  // const res = http.post(url, str, params);
   const id = ids[Math.floor(Math.random() * ids.length)];
-  http.get(`http://localhost:5882/api/${id}/reservations`);
+  const res = http.get(`http://localhost:5882/api/${id}/reservations`);
+  check(res, {
+    'status was 200': r => r.status === 200,
+    'transaction time OK': r => r.timings.duration < 250,
+  });
   sleep(1);
 }
