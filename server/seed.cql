@@ -20,7 +20,7 @@ CREATE TABLE restaurants (
   opening_hour text,
   closing_hour text,
   reservations list<frozen <reservation>>,
-  PRIMARY KEY (id, name)
+  PRIMARY KEY (id)
 );
 
-CREATE INDEX on restaurants(name);
+CREATE CUSTOM INDEX ON restaurants(name) USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = {'mode': 'CONTAINS', 'analyzer_class': 'org.apache.cassandra.index.sasi.analyzer.StandardAnalyzer', 'case_sensitive': 'false'};
