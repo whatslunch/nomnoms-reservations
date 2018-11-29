@@ -8,7 +8,7 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "build": "webpack -d -w",
+    "build": "webpack -d",
     "start": "node server/index.js",
     "writepostgres": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "writecassandra": "node --max-old-space-size=5120 server/fakeDataNoSQL.js",
