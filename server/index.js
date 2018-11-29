@@ -11,6 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
+app.get(`/${process.env.loaderio}`, (req, res) => {
+  res.send(process.env.loaderio);
+});
+
 app.get('/api/:restaurant_id/reservations', (req, res) => {
   const id = req.params.restaurant_id;
   const query = 'SELECT opening_hour, closing_hour, reservations FROM reservations.restaurants WHERE id = ? ;';
@@ -22,6 +26,7 @@ app.get('/api/:restaurant_id/reservations', (req, res) => {
     }
   });
 });
+
 
 app.post('/api/:restaurant_id/reservations', (req, res) => {
   const id = req.params.restaurant_id;
