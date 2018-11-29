@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'API',
+    name: 'whatslunch',
     script: './server/index.js',
 
     // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
@@ -10,9 +10,11 @@ module.exports = {
     watch: true,
     max_memory_restart: '1G',
     env: {
+      PORT: 5885,
       NODE_ENV: 'development',
     },
     env_production: {
+      PORT: 80,
       NODE_ENV: 'production',
     },
   }],
