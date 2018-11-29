@@ -26,3 +26,4 @@ dist/
 
 data/
 .env
+test/

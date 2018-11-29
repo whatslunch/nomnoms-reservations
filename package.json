@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack -d -w",
-    "start": "nodemon server/index.js",
+    "start": "node server/index.js",
     "writepostgres": "node --max-old-space-size=5120 server/fakeDataGenerator.js",
     "writecassandra": "node --max-old-space-size=5120 server/fakeDataNoSQL.js",
     "clearpostgres": "node server/db2/seed.js",
@@ -27,12 +27,14 @@
     "faker": "^4.1.0",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
+    "n-readlines": "^1.0.0",
     "newrelic": "^4.11.0",
     "pg": "^7.6.1",
     "pm2": "^3.2.2",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "redis": "^2.8.0",
     "sequelize": "^4.41.2",
     "styled-components": "^4.0.2"
   },
