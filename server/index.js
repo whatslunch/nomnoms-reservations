@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
+app.use('/api/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
 app.get('/loaderio-be669087c643981188e32b0e550f302e', (req, res) => {
   res.sendFile(path.join(__dirname, './loaderio-be669087c643981188e32b0e550f302e.txt'));
