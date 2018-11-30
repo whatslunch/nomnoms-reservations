@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
 app.get('/loaderio-be669087c643981188e32b0e550f302e', (req, res) => {
-  res.send('loaderio-be669087c643981188e32b0e550f302e');
+  res.sendFile('./loaderio.txt');
 });
 
 app.get('/api/:restaurant_id/reservations', (req, res) => {
