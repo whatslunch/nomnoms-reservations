@@ -49,7 +49,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const restaurantId = window.location.pathname.slice(1, -1);
+    const restaurantId = window.location.pathname.slice(9, -1);
     axios.get(`/api/${restaurantId}/reservations`)
       .then((response) => {
         const reservations = response.data.reservations.map(reservation => (
