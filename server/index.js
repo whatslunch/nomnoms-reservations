@@ -9,10 +9,10 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/:restaurant_id/', express.static(path.join(__dirname, '../public')));
+app.use('/nomnoms/:restaurant_id/', express.static(path.join(__dirname, '../public')));
 
-app.get('/loaderio-be669087c643981188e32b0e550f302e', (req, res) => {
-  res.send('loaderio-be669087c643981188e32b0e550f302e');
+app.get('/loaderio-1090f5cafc2dc649a9944dd3d9684670', (req, res) => {
+  res.sendFile(path.join(__dirname, './loaderio-1090f5cafc2dc649a9944dd3d9684670.txt'));
 });
 
 app.get('/api/:restaurant_id/reservations', (req, res) => {

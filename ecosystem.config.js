@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'whatslunch',
+    name: 'nomnoms',
     script: './server/index.js',
 
     // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
@@ -10,23 +10,22 @@ module.exports = {
     watch: true,
     max_memory_restart: '1G',
     env: {
-      PORT: 5885,
       NODE_ENV: 'development',
     },
     env_production: {
-      PORT: 80,
       NODE_ENV: 'production',
     },
   }],
 
   deploy: {
     production: {
-      user: 'node',
-      host: '212.83.163.1',
-      ref: 'origin/master',
-      repo: 'git@github.com:repo.git',
-      path: '/var/www/production',
-      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
+      user: 'ubuntu',
+      host: 'ec2-34-216-238-63.us-west-2.compute.amazonaws.com',
+      key: '~/.ssh/reservationserver.pem',
+      ref: 'origin/prod',
+      repo: 'https://github.com/whatslunch/nomnoms-reservations.git',
+      path: '/home/ubuntu/nomnoms-reservations',
+      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js',
     },
   },
 };
